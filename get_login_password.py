@@ -1,11 +1,12 @@
+"""Generate logins and passwords for students and write into CSV-files."""
 import random
 import csv
 from datetime import datetime
 
 # Определить глобальные константы.
-ABC = 'AaBbCcDdEeFfGgHhIiJiKkLlMmNnJjPpQqRrSsTtUuVvWwXxYyZz'
+A_B_C = 'AaBbCcDdEeFfGgHhIiJiKkLlMmNnJjPpQqRrSsTtUuVvWwXxYyZz'
 NUMBERS = '0123456789'
-SYMBOLS = ABC + NUMBERS
+SYMBOLS = A_B_C + NUMBERS
 
 # Для транслитерирования используется принципсоотнесения латинских и русских
 # букв, принятый при выдаче заграничных паспортов гражданам России.
@@ -16,20 +17,21 @@ TRANSLIT = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e',
             'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ъ': 'ie', 'ы': 'y', 'ь': '',
             'э': 'e', 'ю': 'iu', 'я': 'ia', '_': '_'}
 
+
 def main():
-    """Функция генерирует логин и пароль студента и сохраняет их в CSV-файле."""
+    """Функция генерирует логин и пароль и сохраняет их в CSV-файле."""
     # Инициализировать флаг, который будет повторять выполнение программы.
     another = 'д'
-    
+
     # Сообщить о начале работы программы.
     print('Данная программа генерирует пароли и логины обучающимся.')
     print('Пароли и логины сохраняются в CSV-файле.')
-        
+
     # Запустить цикл выполнения программы.
-    while another == 'д'.lower():       
+    while another == 'д'.lower():
         # Получить информацию о студенте.
         information = 'Error'
-        while information == 'Error':        
+        while information == 'Error':
             information = get_info()
 
         # На основе полученных данных сгенерировать логин студента.
@@ -38,57 +40,61 @@ def main():
         print(f'\tлогин - {login}')
 
         # Сгенерировать корректный пароль студента.
-        password = get_password(ABC, SYMBOLS)
+        password = get_password(A_B_C, SYMBOLS)
         print(f'\tпароль - {password}')
 
         # Записать информацию в CVS-файл.
         save_info(information, login, password)
         print('\nИнформация записана в файл.')
-        
+
         # Запросить у пользователя необходимость потора программы
         # для генерации пароля и логина ещё одному студенту.
         print('\nПовторить операции для ещё одного студента?')
         another = input('\tд=да, всё остальное=нет: ')
         if another.lower() == 'да':
             another = another[0]
-    
+
     # Сообщить о завершении программы.
     print('\nРабота программы завершена.')
     print('(c) Nobus, 2021')
 
 
 def get_info():
-    """Функция получает от пользователя корректную информацию о студенте.
+    """
+    Функция получает от пользователя корректную информацию о студенте.
 
     fullname - Ф.И.О. полностью (отчество указывается при наличии),
     code - буквенный код направления подготовки (специальности),
     year - год поступления,
     group - номер учебной группы,
-    number - исходный номер студента в учебной группе (при формировании группы),
+    number - исходный номер студента в группе (при формировании группы),
     form - форму обучения.
     """
     # Получить данные о студенте и проверить их на корректность ввода.
     try:
-        fullname = input('\nВведите Ф.И.О. студента (отчество при наличии): ').strip()
+        fullname = input('\nВведите Ф.И.О. студента (при наличии): ').strip()
         assert type(fullname) == str and (2 <= len(fullname.split()) <= 3)
-        
-        code = input('Введите буквенный код направления подготовки (специальности): ').strip()
+
+        code = input('Введите буквенный код направления подготовки \
+(специальности): ').strip()
         assert len(code) > 0
-        
+
         year = input('Введите год поступления студента (4 цифры): ').strip()
         assert len(year) == 4
         check_year = int(year)
-        
+        assert 1950 < check_year < 2025
+
         group = input('Введите цифрой номер учебной группы: ').strip()
         assert len(group) > 0
         check_group = int(group)
         group = str(check_group)
-        
-        number = input('Введите исходный номер студента в учебной группе: ').strip()
+
+        number = input('Введите исходный номер студента \
+в учебной группе: ').strip()
         assert len(group) > 0
         check_number = int(number)
         number = str(check_number)
-        
+
         form = input('Введите форму обучения (1=очное, 2=заочное): ').strip()
         assert len(code) > 0 and form in '12'
 
@@ -109,7 +115,8 @@ def get_info():
 
 
 def get_login(information):
-    """Функция генерирует логин на основании данных о студенте.
+    """
+    Функция генерирует логин на основании данных о студенте.
 
     Логин (латинские буквы и цифры) включает:
     фамилию и инициалы студента,
@@ -126,7 +133,7 @@ def get_login(information):
     group = information['group']
     number = information['number']
     form = information['form']
-    
+
     # Преобразовать в строчные буквы и транслитерировать имя и
     # инициалы студента c использованием глобального словаря.
     name = fullname.split()
@@ -141,26 +148,26 @@ def get_login(information):
         transl_name += TRANSLIT[ch]
 
     # Преобразовать в строчные буквы и транслитерировать код направления
-    # подготовки (специальности) c использованием глобального словаря. 
+    # подготовки (специальности) c использованием глобального словаря.
     transl_code = ''
     for ch in code.lower():
         transl_code += TRANSLIT[ch]
-    
+
     # При необходимости добавить к номеру группы и номеру студента начальный 0.
     # Также преобразовать сведения о форме обучения
     # (в логине студента будет отражена только заочная форма обучения).
     w_group = group if int(group) > 10 else '0' + group
     w_num = number if int(number) > 10 else '0' + number
     w_form = '' if form == '1' else 'z'
-    
+
     # Сформировать логин студента.
     login = f'{transl_name}_{transl_code}{year[-2:]}{w_group}{w_form}_{w_num}'
-    
+
     # Вернуть сформированный логин.
     return login
 
 
-def get_password(ABC, SYMBOLS):
+def get_password(A_B_C, SYMBOLS):
     """Функция генерирует пароль из 8 символов.
 
     Первый символ пароля не может быть цифрой.
@@ -169,14 +176,15 @@ def get_password(ABC, SYMBOLS):
     # Сгенерировать пароль в цикле с использованием глобальных констант
     # (пока не будет удовлетворены все условия к формированию пароля).
     repeat = True
+    password = ''
     while repeat:
-        password  = ''
-        password += ABC[random.randint(0, 51)]
+        password = ''
+        password += A_B_C[random.randint(0, 51)]
         for _ in range(7):
             password += SYMBOLS[random.randint(0, 61)]
-        
+
         repeat = check_password(password)
-    
+
     # Вернуть сгенерированный пароль.
     return password
 
@@ -188,11 +196,11 @@ def check_password(password):
     имеются ли в нём буквы разного регистра и цифры.
     """
     # Определить переменные для проверки наличия в пароле цифр,
-    #строчных и прописных букв.
+    # строчных и прописных букв.
     is_digit = False
     is_lower = False
     is_upper = False
-    
+
     # Проверить наличие в пароле требуемых символов.
     for symbol in password:
         if symbol.isdigit():
@@ -201,20 +209,20 @@ def check_password(password):
             is_lower = True
         elif symbol.isupper():
             is_upper = True
-    
+
     # False в случае, если пароль удовлетворяет требованиям
     # (чтобы завершить цикл генерации пароля).
     no_repeat = True
     if is_digit and is_lower and is_upper:
-        no_repeat = False    
- 
+        no_repeat = False
+
     # Вернуть информацию о необходимости заново генерировать пароль.
     return no_repeat
 
 
 def save_info(information, login, password):
     """Функция сохраняет всю информацию о студенте в датированном CSV-файле.
-    
+
     В названии файла отражены дата его создания.
     В файл записываются:
     Ф.И.О.,
@@ -231,19 +239,19 @@ def save_info(information, login, password):
     year = information['year']
     group = information['group']
     number = information['number']
-    
+
     # Скорректировать для записи в файл информацию о форме обучения
-    # (в удобном для чтения виде)
+    # (в удобном для чтения виде).
     form = information['form']
     fullform = 'ОФО' if form == '1' else 'ЗФО'
-    
-    # Сформировать строку для записи в CSV-файл    
+
+    # Сформировать строку для записи в CSV-файл.
     w_info = [fullname, code, year, group, number, fullform, login, password]
-    
+
     # Сформировать дату для имени файла.
     cur_datetime = datetime.now()
     w_datetime = f'{cur_datetime.year}-{cur_datetime.month}-{cur_datetime.day}'
-    
+
     # Открыть файл для записи (дозаписи) и записать в него строку.
     with open(f'logins_{w_datetime}.csv', 'a') as file:
         writer = csv.writer(file)
