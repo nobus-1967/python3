@@ -225,12 +225,12 @@ def check_password(password):
 
     # False в случае, если пароль удовлетворяет требованиям
     # (чтобы завершить цикл генерации пароля).
-    no_repeat = True
+    is_not_valid = True
     if is_digit and is_lower and is_upper:
-        no_repeat = False
+        is_not_valid = False
 
     # Вернуть информацию о необходимости заново генерировать пароль.
-    return no_repeat
+    return is_not_valid
 
 
 def save_info(information, login, password):
