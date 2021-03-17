@@ -8,7 +8,7 @@ def recursive_factorial(n):
         return n * recursive_factorial(n - 1)
 
 
-print(f'Метод 1 для числа 100: {recursive_factorial(100)}')
+print(f'Метод 1 (рекурсия) для числа 100: {recursive_factorial(100)}')
 
 
 # Метод 2: итерация + рекурсия
@@ -22,7 +22,7 @@ def iterative_and_recursive_factorial(n):
     return calculate_factorial(n, 1)
     
 
-print(f'Метод 2 для числа 100: {iterative_and_recursive_factorial(100)}')
+print(f'Метод 2 (интерация + рекурсия) для числа 100: {iterative_and_recursive_factorial(100)}')
 
 
 # Метод 3: итерация (цикл while)
@@ -36,7 +36,7 @@ def iterative_factorial_while(n):
     return factorial
 
 
-print(f'Метод 3 для числа 100: {iterative_factorial_while(100)}')
+print(f'Метод 3 (итерация-while) для числа 100: {iterative_factorial_while(100)}')
 
 
 # Метод 4: итерация (цикл for)
@@ -48,4 +48,4 @@ def iterative_factorial_for(n):
     return factorial
 
 
-print(f'Метод 4 для числа 100: {iterative_factorial_for(100)}')
+print(f'Метод 4 (итерация-for) для числа 100: {iterative_factorial_for(100)}')
