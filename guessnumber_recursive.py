@@ -2,6 +2,7 @@
 import random
 
 def guess_number(number):
+    "Пользователь отгадывает случайное число."
     user_number = int(input('\n>>> Введите ваше число от 1 до 100: '))
     
     if user_number == number:
