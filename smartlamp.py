@@ -10,12 +10,13 @@ class SmartLamp:
         self._color = 'white'
         
         
-    def get_on(self) -> bool:
+    @property
+    def on(self) -> bool:
         """Return the state of the lamp (on = True/off = False): getter."""
         return self._on
         
-        
-    def set_on(self, value: bool):
+    @on.setter    
+    def on(self, value: bool):
         """Change the state of the lamp (on = True/off = False): setter."""
         self._on = value
         
@@ -28,19 +29,14 @@ class SmartLamp:
             
         print(f'The smart lamp is now {self._status}!')
         
-        
-    def get_brigtness(self) -> int:
+    @property   
+    def brightness(self) -> int:
         """Return the brightness of the lamp (in %): getter."""
-        return self._brightness
+        return self._brightness   
     
-    
-    def get_color(self) -> str:
-        """Return the color of the lamp (a string like 'white'): getter."""      
-        return self._color
-        
-    
-    def set_brightness(self, value: int):
-        """Change the current brightness of the lamp (if the lamp is on)."""
+    @brightness.setter
+    def brightness(self, value: int):
+        """Change the current brightness (if the lamp is on): setter."""
         if self._status == 'turned on':
             if value >= 0 and value <= 100:
                 self._brightness = value
@@ -52,9 +48,14 @@ class SmartLamp:
         else:
             print(f'You can\'t change brightness while the lamp is {self._status}!')
                  
+    @property   
+    def color(self) -> str:
+        """Return the color of the lamp (a string like 'white'): getter."""      
+        return self._color
     
-    def set_color(self, value: str):
-        """Change the current color of the lamp (if the lamp is on)."""
+    @color.setter
+    def color(self, value: str):
+        """Change the current color (if the lamp is on): setter."""
         if self._status == 'turned on':
             if value in ['white',
                          'orange',
@@ -87,23 +88,15 @@ print(smartlamp)
 
 print()
 
-smartlamp.set_on(True)
-smartlamp.set_on(False)
+smartlamp.on = True
+smartlamp.on = False
 
 print()
 
-smartlamp.set_brightness(100)
-smartlamp.set_on(True)
-smartlamp.set_brightness(-1)
-smartlamp.set_brightness(50)
-
-print()
-
-smartlamp.set_on(False)
-smartlamp.set_color('blue')
-smartlamp.set_on(True)
-smartlamp.set_color('yellow')
-smartlamp.set_color('orange')
+smartlamp.brightness = 100
+smartlamp.on = True
+smartlamp.brightness = -1
+smartlamp.brightness = 50
 
 print()
 
@@ -111,7 +104,19 @@ print(smartlamp)
 
 print()
 
-smartlamp.set_on(False)
+smartlamp.on = False
+smartlamp.color = 'blue'
+smartlamp.on = True
+smartlamp.color = 'yellow'
+smartlamp.color = 'orange'
+
+print()
+
+print(smartlamp)
+
+print()
+
+smartlamp.on = False
 
 print()
 
