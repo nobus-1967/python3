@@ -12,7 +12,7 @@ def main():
 
 
 def get_number() -> int:
-    """Input and check a numver from 1 yo 100."""
+    """Input and check a number from 1 to 100."""
     try:
         num = int(input('Enter a positive integer from 1 to 100: '))
         assert 1 <= num <= 100
