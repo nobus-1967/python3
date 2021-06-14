@@ -4,10 +4,10 @@ class SmartLamp:
         
     def __init__(self):
         """Initialize a new lamp (off, brightness = 0%, color is white)."""
-        self._on = False
+        self.on = False
         self._status = 'turned off'
-        self._brightness = 0
-        self._color = 'white'
+        self.brightness = 0
+        self.color = 'white'
         
         
     @property
@@ -15,9 +15,12 @@ class SmartLamp:
         """Return the state of the lamp (on = True/off = False): getter."""
         return self._on
         
-    @on.setter    
+    @on.setter
     def on(self, value: bool):
-        """Change the state of the lamp (on = True/off = False): setter."""
+        """Change the state of the lamp (on = True/off = False): setter."""          
+        if not isinstance(value, bool):
+            raise TypeError('Expected a boolean value!')
+        
         self._on = value
         
         if value:
@@ -37,6 +40,9 @@ class SmartLamp:
     @brightness.setter
     def brightness(self, value: int):
         """Change the current brightness (if the lamp is on): setter."""
+        if not isinstance(value, int):
+            raise TypeError('Expected an integer!')
+        
         if self._status == 'turned on':
             if value >= 0 and value <= 100:
                 self._brightness = value
@@ -56,6 +62,9 @@ class SmartLamp:
     @color.setter
     def color(self, value: str):
         """Change the current color (if the lamp is on): setter."""
+        if not isinstance(value, str):
+            raise TypeError('Expected a string!')
+        
         if self._status == 'turned on':
             if value in ['white',
                          'orange',
@@ -75,14 +84,23 @@ class SmartLamp:
     
     def __repr__(self) -> str:
         """Display all conditions (variables) of the lamp."""
-        text_1 = f'The smart lamp is {self._status}.\n'
-        text_2 = f'Brightnes: {self._brightness}%, color: {self._color}.'
+        info_1 = f'The smart lamp is {self._status}.\n'
+        info_2 = f'Brightnes: {self._brightness}%, color: {self._color}.'
         
-        return text_1 + text_2
+        return info_1 + info_2
 
 # ----------------------------------------------------------------------
 # Test our class:
 smartlamp = SmartLamp()
+
+print()
+
+has_brightness = hasattr(smartlamp, 'brightness')
+has_color = hasattr(smartlamp, 'color')
+print(f'Has the oject an attribute "brightness"? {has_brightness}')
+print(f'Has the oject an attribute "color"? {has_color}')
+
+print()
 
 print(smartlamp)
 
