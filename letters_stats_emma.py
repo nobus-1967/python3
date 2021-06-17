@@ -1,3 +1,6 @@
+# Use string.punctuation for other symbols (!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~)
+import string
+
 def main() -> None:
     '''Run the main function-driver.'''
     print('This program analyzes the use of letters in a passage')
@@ -18,21 +21,6 @@ def main() -> None:
     print_stats(stats)   
     
 
-def count_letters(phrases: list) -> dict:
-    '''Counts a usage of every letter and return as a dictionary.'''
-    usage = dict()
-    
-    for sentence in phrases:
-        for symbol in sentence:
-            if symbol not in '.,:;\'"!?() -':
-                if symbol not in usage:
-                    usage[symbol.lower()] = 1
-                else:
-                    usage[symbol.lower()] += 1
-    
-    return usage
-    
-    
 def input_text() -> list:
     '''Open file and return a text.'''
     file_text = list()
@@ -44,11 +32,27 @@ def input_text() -> list:
     return file_text
 
 
+def count_letters(phrases: list) -> dict:
+    '''Counts a usage of every letter and return as a dictionary.'''
+    usage = dict()
+    punkts = string.punctuation + string.whitespace
+    
+    for sentence in phrases:
+        for symbol in sentence:
+            if symbol not in punkts:
+                if symbol not in usage:
+                    usage[symbol.lower()] = 1
+                else:
+                    usage[symbol.lower()] += 1
+    
+    return usage
+    
+
 def print_stats(usage: dict) -> None:
     '''Print statistics sorted by letters.'''
     letters = sorted(list(usage.keys()))
     
-    print('\nStatistics (letters in alphabatical order):')
+    print('\nStatistics (letters in alphabetical order):')
     for letter in letters:
         print(f'\t{letter}: {usage[letter]:3d} times')
 
