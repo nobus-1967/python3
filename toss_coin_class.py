@@ -7,10 +7,10 @@ class Coin:
     statistics = {'times': 0,
                   'observe': 0,
                   'reverse': 0}
-    
+
     def __init__(self):
         print('Вот новая монета для бросания.')
-    
+
     @classmethod
     def toss(cls):
         print('Бросаем монету...')
@@ -21,8 +21,8 @@ class Coin:
         else:
             Coin.statistics['reverse'] += 1
         print(f'...{result}!')
-   
-   @classmethod
+
+    @classmethod
     def stats(cls):
         print(f'Монета брошена: {Coin.statistics["times"]:3d} раз(а);')
         print(f'- орёл выпал:   {Coin.statistics["observe"]:3d} раз(а);')
