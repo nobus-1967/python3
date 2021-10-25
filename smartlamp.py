@@ -4,10 +4,10 @@ class SmartLamp:
         
     def __init__(self):
         """Initialize a new lamp (off, brightness = 0%, color is white)."""
-        self.on = False
+        self._on = False
         self._status = 'turned off'
-        self.brightness = 0
-        self.color = 'white'
+        self._brightness = 0
+        self._color = 'white'
         
         
     @property
@@ -139,3 +139,4 @@ smartlamp.on = False
 print()
 
 print(smartlamp)
+
