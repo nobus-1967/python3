@@ -33,8 +33,8 @@ def main():
     while another == 'д'.lower():
         
         # Получить год для определения Пасхи.
-        year = 'Error'
-        while year == 'Error':
+        year = get_year()
+        while year is None:
             year = get_year()
             
         # Сообщить пользователю о том, для какого года будет произведён расчёт.
@@ -42,7 +42,7 @@ def main():
         
                     
         # Расчитать дату Пасхи по новому стилю и вывести её.
-        easter_date = calculate_easter_date(year)
+        easter_date = calculate_easter_date(int(year))
         print(f'Итак, Пасха приходится на {easter_date[0]} {easter_date[1]}.')
 
         # Запросить у пользователя необходимость повторного расчёта Пасхи
@@ -58,24 +58,24 @@ def main():
     print('(c) Nobus, 2022')
     
 
-def get_year() -> int:
+def get_year() -> int | None:
     """Input a year to calculate the date of Orthodox Easter."""
     try:
-        year = int(input('Введите год для определения даты Пасхи: '))
-        
+        year = int(input('Введите год для определения даты Пасхи: '))  
         assert 2000 < year < 2101
     
     except (AssertionError, ValueError):
                 # В случае ошибки повторить ввод года.
                 print('Год введен неверно! Необходимо ввести его заново.')
                 print('(Год - целое число больше 2000 и меньше 2101.)')
-                return 'Error'
+                
+                return None
     else:
         # Вернуть год.
         return year
 
 
-def calculate_easter_date(year:int) -> dict:
+def calculate_easter_date(year:int) -> list:
     """Calculate the Easter's date."""
     a = year % A
     b = year % B
@@ -84,11 +84,10 @@ def calculate_easter_date(year:int) -> dict:
     e = ((E2 * b) + (E3 * c) + (E4 * d) + 6) % E1
     f = d + e
     
-    easter_date = [(F1 + f), 'апреля'] if f <= 26 else [(f - 26), 'мая']
+    date = [(F1 + f), 'апреля'] if f <= 26 else [(f - 26), 'мая']
     
-    return easter_date
+    return date
 
 
 if __name__ == '__main__':
     main()
-
