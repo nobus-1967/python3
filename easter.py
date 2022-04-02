@@ -30,7 +30,7 @@ def main():
     print('----------------------------------------------')
     
     # Запустить цикла выполнения программы.
-    while another == 'д'.lower():
+    while another == 'д':
         
         # Получить год для определения Пасхи.
         year = get_year()
@@ -50,7 +50,7 @@ def main():
         print('\nПовторить расчёт Православной Пасхи для другого года?')
         another = input('д=да, всё остальное=нет: ')
         if another.lower() == 'да':
-            another = another[0]
+            another = another[0].lower()
 
     # Сообщить о завершении программы.
     print('--------------------------')
@@ -91,3 +91,4 @@ def calculate_easter_date(year:int) -> list:
 
 if __name__ == '__main__':
     main()
+
