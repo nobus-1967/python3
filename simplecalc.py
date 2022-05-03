@@ -69,6 +69,7 @@ def get_operator() -> str | None:
     else:
         return operator        
         
+
 # Функция для математических действий с числами
 def calculate(x: float, y: float, operator: str) -> float:
     '''Calculate two numbers'''
@@ -88,3 +89,4 @@ def calculate(x: float, y: float, operator: str) -> float:
 
 if __name__ == '__main__':
     main()
+
