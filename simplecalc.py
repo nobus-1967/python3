@@ -41,35 +41,35 @@ def get_float() -> float | None:
     try:
         number = float(input('(число, не равное 0): '))  
         assert number != 0
+        
+        return number
     
     except (AssertionError, ValueError):
         print('Число введено неверно! Необходимо ввести его заново')
         print('(Число не должно быть равным нулю!)')
                 
         return None
-    else:
-        return number
-
+        
 
 # Функция для ввода и проверки корректности вводимого оператора
 def get_operator() -> str | None:
     '''Input an orerator'''
     try:
-        operator = input('+ или - или * или /): ')
+        operator = input('(+ или - или * или /): ')
         assert operator[0] in '+-*/'
         
         if len(operator) > 1:
             raise AssertionError        
+        
+        return operator
     
     except AssertionError:
         print('Оператор введен неверно! Необходимо ввести его заново')
         print('(один символ из числа +-*/)')
                 
         return None
-    else:
-        return operator        
+               
         
-
 # Функция для математических действий с числами
 def calculate(x: float, y: float, operator: str) -> float:
     '''Calculate two numbers'''
