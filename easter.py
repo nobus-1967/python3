@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Расчет Православной Пасхи в XXI веке.
 """Date of Orthodox Easter (XXI century)."""
 
