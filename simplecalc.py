@@ -72,7 +72,7 @@ def get_operator() -> str | None:
 # Функция для математических действий с числами
 def calculate(x: float, y: float, operator: str) -> float:
     '''Calculate two numbers'''
-    total = 0
+    total = 0.0
     
     if operator == '+':
         total = x + y
