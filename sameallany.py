@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # The same -  examples of using built-in all() and any()
 
 # Collection (tuple of tuples) for analysis
@@ -13,11 +13,11 @@ for name, age, gender in PERSONS:
 print()
 
 # Check if all names start with the letter 'J'
-is_all_names_start_with_j = all(name[0] == 'J' for name, age, gender in PERSONS)
+is_all_names_start_with_j = all(name.startswith('J') for name, age, gender in PERSONS)
 print(f'Do all the names start with "J"? - {is_all_names_start_with_j}')
 
 # Check if any name starts with the letter 'J'
-is_any_name_starts_with_j = any(name[0] == 'J' for name, age, gender in PERSONS)
+is_any_name_starts_with_j = any(name.startswith('J') for name, age, gender in PERSONS)
 print(f'Does any name start with "J"? - {is_any_name_starts_with_j}')
 
 print()
