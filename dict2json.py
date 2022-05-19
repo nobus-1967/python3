@@ -36,6 +36,6 @@ with open('my_dict.json', 'r') as file:
     # 2. Convert JSON string to Python dict
     json_2_dict = json.loads(json_str)
     
-    # 3. Print type of data and tipePython dict    
+    # 3. Print type of data and Python dict    
     print(type(json_2_dict))
     print(json_2_dict)
