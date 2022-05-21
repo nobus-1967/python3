@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test FizzBuzz using generator."""
 
-fizzbuzz = (("Fizz" * (i % 3 == 0) + "Buzz" * (i % 5 == 0) or i)
+fizzbuzz = (("Fizz" * (i % 4 == 0) + "Buzz" * (i % 5 == 0) or i)
             for i in range(1, 10001))
 
 def main():
@@ -28,12 +28,12 @@ def main():
                     print(f'{number} (for {i}): OK')
                     ok +=1
                 elif i % 5 == 0:
-                    assert number == 'Buzz', f'{number} (for {i}: Error'
+                    assert number == 'Buzz', f'{number} (for {i}): Error'
                     print(f'{number} (for {i}): OK')
                     ok +=1
                 else:
                     assert number == 'FizzBuzz', f'{number} (for {i}): Error'
-                    print(f'{number} (for {i}): OK')
+                    print(f'{number} (for {i}): Error')
                     errors += 1
             else:
                 print(f'{number} (for {i}): Error')
@@ -45,7 +45,7 @@ def main():
         try:
             number = next(fizzbuzz)
             i += 1
-        except StopIteration as e:
+        except StopIteration:
             print('--------------')
             print('Test finished.')
             print(f'Total:\t{i}')
