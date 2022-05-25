@@ -39,15 +39,15 @@ def main():
         except AssertionError as e:
             print(e)
             errors += 1
-
-        try:
-            number = next(fizzbuzz)
-            i += 1
-        except StopIteration:
-            print('--------------')
-            print('Test finished.')
-            print(f'Total:\t{i}')
-            break
+        finally:
+            try:
+                number = next(fizzbuzz)
+                i += 1
+            except StopIteration:
+                print('--------------')
+                print('Test finished.')
+                print(f'Total:\t{i}')
+                break
 
     print(f'Passed:\t{ok}')
     print(f'Errors:\t{errors}')
