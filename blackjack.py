@@ -71,15 +71,25 @@ def main():
     print()
 
     print('Dealer\'s (Computer) hand:')
-    show_hand(dealer_hand)
-    dealer_total = count_hand(dealer_hand)
-    print(f'Dealer\'s (Computer) total: {dealer_total}')
+    show_half_hand(dealer_hand)
 
     # Check if there is any BLACKJACK
     player_blackjack = check_blackjack(player_hand)
     dealer_blackjack = check_blackjack(dealer_hand)
 
     # If BLACKJACK, the game finishes
+    if player_blackjack or dealer_blackjack:
+        print()
+        print('*************************')
+        print('There is a BLACKJACK now!')
+        print()
+
+        print('Your (Player_1) hand:')
+        show_hand(player_hand)
+        print()
+        print('Dealer\'s (Computer) hand:')
+        show_hand(dealer_hand)
+
     if player_blackjack and dealer_blackjack:
         print()
         print('Game ties (both BLACKJACKS).')
@@ -111,6 +121,14 @@ def main():
                 print(f'Your (Player_1) total: {player_total}')
                 break
 
+        # Open dealer's pocket hand
+        print()
+        print('Opening dealer\'s (Computer) hand.')
+        print('Dealer\'s (Computer) hand:')
+        show_hand(dealer_hand)
+        dealer_total = count_hand(dealer_hand)
+        print(f'Dealer\'s (Computer) total: {dealer_total}')
+
         # Dealer hits or stands
         while dealer_total < STAND_ON_SOFT:
             print()
@@ -124,6 +142,7 @@ def main():
 
         # Show totals and who wins the game
         print()
+        print('********')
         print('Finally:')
         print(f'- Your (Player_1) total: {player_total}')
         print(f'- Dealer\'s (Computer) total: {dealer_total}')
@@ -172,7 +191,7 @@ def show_titles():
     """Print some game's rules."""
     print()
     print('You will play against the program (dealer).')
-    print('The playing card deck sonsists of 52 cards:')
+    print('The playing card deck consists of 52 cards:')
     print('- suits does not matter;')
     print('- 2, 3, 4, 5, 6, 7, 8, 9, 10 count as their numbers;')
     print('- J (Jack), Q (Queen), K (King) count as 10;')
@@ -188,8 +207,8 @@ def show_titles():
     print('- if total of player or dealer exceeds 21, he loses')
     print('  (when both exceed 21, game ties);')
     print('- hand (cards) that is higher than other but less 21, wins;')
-    print('- but if dealer\'s hand is 17, and even that hand is less')
-    print('  than player\'s one, game ties.')
+    print('- but if dealer\'s hand is 17 (S17 = 6 + 1), and even that hand')
+    print('  is less than player\'s one, game ties.')
 
 
 def create_cards():
@@ -232,6 +251,12 @@ def show_hand(hand):
     """Show player's/dealer's hand."""
     for index, card in enumerate(hand):
         print(f'{index+1}) {card[0]}')
+
+
+def show_half_hand(hand):
+    """Show one card from dealer's pocket hand."""
+    print(f'1) {hand[0][0]}')
+    print('2) Card is face down')
 
 
 def count_hand(hand):
@@ -280,7 +305,9 @@ def check_blackjack(hand):
 
 def check_s17(hand):
     """Check if S17 (stand-on-soft-17) for dealer."""
-    return True if count_hand(hand) == STAND_ON_SOFT else False
+    return True if (count_hand(hand) == STAND_ON_SOFT and
+                    len(hand) == 2 and
+                    (hand[0][1] == 1 or hand[1][1] == 1)) else False
 
 
 def check_exceeding(hand):
