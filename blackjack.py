@@ -10,7 +10,7 @@ This program:
 4) if no blackjack -> counts cards for player and dealer;
    if anybody achives 22 or higher -> he loses;
    if both -> game ties;
-   if dealer achives 17 and cards are 6A -> game ties
+   if dealer achives 17 -> game ties
 5) if player has 20 and less, he decides to "hit" (take another card)
    or "stand" (pass); if dealer has 16 and less, he have to "hit";
    further counts cards as in 4).
