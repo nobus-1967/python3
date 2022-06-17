@@ -248,10 +248,13 @@ def count_hand(hand):
 
 def get_user_choice():
     """Input user's choice to hit or stand."""
+    # Get and assert user's choice
     try:
         user_choice = int(input('>>> Enter your choice (1 or 0): '))
         assert user_choice in [0, 1]
+    # If users's input is not 1 or 0 - return None
     except (AssertionError, ValueError):
+
         print('You should type 1 or 0 and then ENTER.')
         user_choice = None
 
@@ -263,6 +266,7 @@ def check_choice():
     """Get and check user's choice."""
     checked_choice = get_user_choice()
 
+    # Re-enter user's input while it is not valid
     while checked_choice is None:
         checked_choice = get_user_choice()
 
