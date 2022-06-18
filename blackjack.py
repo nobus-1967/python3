@@ -92,7 +92,7 @@ def main():
 
     if player_blackjack and dealer_blackjack:
         print()
-        print('Game ties (both BLACKJACKS).')
+        print('PUSH! Game ties (both BLACKJACKS).')
     elif player_blackjack:
         print()
         print('You (Player_1) have BLACKJACK and wins. Congratulations!')
@@ -130,15 +130,16 @@ def main():
         print(f'Dealer\'s (Computer) total: {dealer_total}')
 
         # Dealer hits or stands
-        while dealer_total < STAND_ON_SOFT:
-            print()
-            print('Additional card to dealer (Computer).')
-            another_card = deal_card(card_deck)
-            dealer_hand.append(another_card)
-            print('Dealer\'s (Computer) hand:')
-            show_hand(dealer_hand)
-            dealer_total = count_hand(dealer_hand)
-            print(f'Dealer\'s (Computer) total: {dealer_total}')
+        if player_total <= WIN_SCORE:
+            while dealer_total < STAND_ON_SOFT:
+                print()
+                print('Additional card to dealer (Computer).')
+                another_card = deal_card(card_deck)
+                dealer_hand.append(another_card)
+                print('Dealer\'s (Computer) hand:')
+                show_hand(dealer_hand)
+                dealer_total = count_hand(dealer_hand)
+                print(f'Dealer\'s (Computer) total: {dealer_total}')
 
         # Show totals and who wins the game
         print()
@@ -156,7 +157,7 @@ def main():
         # Print who wins or the game ties
         if player_total == dealer_total and player_total <= WIN_SCORE:
             print()
-            print('Game ties (equal totals).')
+            print('PUSH! Game ties (equal totals).')
         elif player_exceed and dealer_exceed:
             print()
             print('Game ties (both exceed 21).')
@@ -198,15 +199,17 @@ def show_titles():
     print('- A (Ace) counts as 11 if total is 21 or less (else counts as 1);')
     print('- if total of first two cards is 21 (10/J/Q/K + A),')
     print('  that hand wins as "BLACKJACK";')
-    print('- if both hands are BLACKJACKS, game ties;')
+    print('- if both hands are "BLACKJACKS", game ties ("PUSH");')
     print('- if total of player\'s cards is less than 21, he can choose:')
-    print('  take another card("hit") or pass ("stand");')
+    print('  take another card("HIT") or pass ("STAND");')
     print('- if total of dealer\'s cards is less than 17,')
     print('  he takes another card and repeat this step while total exceeds')
     print('  17 or higher;')
     print('- if total of player or dealer exceeds 21, he loses')
     print('  (when both exceed 21, game ties);')
-    print('- hand (cards) that is higher than other but less 21, wins;')
+    print('- if totals of player and dealer are equal and less 22,')
+    print('  game ties ("PUSH");')
+    print('- hand (cards) that is higher than other but less 22, wins;')
     print('- but if dealer\'s hand is 17 (S17 = 6 + 1), and even that hand')
     print('  is less than player\'s one, game ties.')
 
