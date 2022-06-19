@@ -95,10 +95,10 @@ def main():
         print('PUSH! Game ties (both BLACKJACKS).')
     elif player_blackjack:
         print()
-        print('You (Player_1) have BLACKJACK and wins. Congratulations!')
+        print('You (Player_1) have BLACKJACK and win. Congratulations!')
     elif dealer_blackjack:
         print()
-        print('Sorry, dealer (Computer) have BLACKJACK, you loses the game.')
+        print('Sorry, dealer (Computer) have BLACKJACK, you lose the game.')
     else:
         # Continue the game
         # Player hits or stands
@@ -163,23 +163,23 @@ def main():
             print('Game ties (both exceed 21).')
         elif not player_exceed and dealer_exceed:
             print()
-            print('Dealer (Computer) exceeds 21 and you (Player_1) wins.')
+            print('Dealer (Computer) exceeds 21 and you (Player_1) win.')
             print('Congratulations!')
         elif player_exceed and not dealer_exceed:
             print()
             print('Sorry, dealer (Computer) wins,')
-            print('you (Player_1) exceeds 21 and loses the game.')
+            print('you (Player_1) exceed 21 and lose the game.')
         elif player_total > dealer_total and check_s17(dealer_hand):
             print()
             print('Game ties - S17 rule, your (Player_1) total is higher,')
             print('but dealer (Computer) total is 17.')
         elif player_total > dealer_total and not check_s17(dealer_hand):
             print()
-            print('You (Player_1) wins. Congratulations!')
+            print('You (Player_1) win. Congratulations!')
         elif dealer_total > player_total:
             print()
             print('Sorry, dealer (Computer) wins by higher total,')
-            print('you (Player_1) loses the game.')
+            print('you (Player_1) lose the game.')
 
     # Show finishing titles
     print()
