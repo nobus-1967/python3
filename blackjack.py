@@ -73,11 +73,11 @@ def main():
     # Check if dealer has BLACKJACK:
     dealer_blackjack = check_blackjack(dealer_hand)
 
-    if player_blackjack or dealer_blackjack:
+    if dealer_blackjack:
         print()
         print('Dealer gets BLACKJACK!')
         print()
-        print('Opening dealer\'s hand.')
+        print('Dealer\'s hand:')
         show_hand(dealer_hand)
 
     # If BLACKJACK, the game finishes
@@ -261,11 +261,21 @@ def show_one_card(hand):
 def count_hand(hand):
     """Count card's values in players/dealer's hand."""
     total = 0
+    is_ace = False
 
     for card in hand:
-        total += card[1]
-        if total <= 11 and card[1] == 1:
-            total += 10
+        if card[1] == 1:
+            total += 11
+            is_ace = True
+
+            if total > 21:
+                total -= 10
+                is_ace = False
+        else:
+            total += card[1]
+            if total > 21 and is_ace:
+                total -= 10
+                is_ace = False
 
     return total
 
