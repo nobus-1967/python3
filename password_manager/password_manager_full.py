@@ -58,7 +58,7 @@ def main():
         # 4. Run main menu.
         show_menu()
 
-        # 5. Get the user's choice  from main menu and process it.
+        # 5. Get the user's choice from main menu and process it.
         menu_choice = 'V'
 
         while menu_choice != 'Q':
@@ -72,32 +72,45 @@ def main():
                 else:
                     print('Your database of services and passwords is empty!')
             elif menu_choice == 'A':
-                add_service(enc_database)
-                store_database(enc_database)
+                proceed = check_proceed_choice()
+                if proceed == 'Y':
+                    add_service(enc_database)
+                    store_database(enc_database)
+                elif proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
             elif menu_choice == 'C':
-                if len(enc_database) > 0:
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
                     key = get_service_key(enc_database)
                     password = input('\t>>> Enter a new password: ')
                     enc_password = encrypt_password(password)
                     enc_database[key][1] = enc_password
                     print('Your password was changes!')
                     store_database(enc_database)
-                else:
+                elif len(enc_database) > 0 and proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
+                elif len(enc_database) == 0:
                     print('Nothing to change, your database is empty!')
             elif menu_choice == 'D':
-                if len(enc_database) > 0:
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
                     key = get_service_key(enc_database)
                     del enc_database[key]
                     print(f'The service \'{key}\' was deleted!')
                     store_database(enc_database)
-                else:
+                elif len(enc_database) > 0 and proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
+                elif len(enc_database) == 0:
                     print('Nothing to delete, your database is empty!')
             elif menu_choice == 'L':
-                if len(enc_database) > 0:
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
                     enc_database.clear()
                     print('Your database cleared!')
                     store_database(enc_database)
-                else:
+                elif len(enc_database) > 0 and proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
+                elif len(enc_database) == 0:
                     print('Your database is already empty!')
     else:
         print('Sorry, your master password has not been validated.')
@@ -157,7 +170,7 @@ def add_service(enc_database):
     """Add service names, logins and passwords to dict."""
     service = input('\t>>> Enter a service name: ')
     login = input('\t>>> Enter your login (or e-mail): ')
-    password = getpass.getpass('\t>>> Enter your password: ')
+    password = input('\t>>> Enter your password: ')
 
     enc_database[service] = [login, encrypt_password(password)]
 
@@ -256,6 +269,29 @@ def check_menu_choice():
         menu_choice = get_menu_choice()
 
     return menu_choice.upper()
+
+
+def get_proceed_choice():
+    """Input user's choice to proceed or cancel an operation."""
+    try:
+        user_choice = input('\t>>> Enter Y=proceed, Q=cancel: ')
+        assert user_choice.upper() in ['Y', 'Q']
+    except (AssertionError, ValueError):
+        print('Enter valid choice (Y, Q).')
+        user_choice = None
+
+    finally:
+        return user_choice
+
+
+def check_proceed_choice():
+    """Get and check user's procceed or cancel."""
+    proceed_choice = get_proceed_choice()
+
+    while proceed_choice is None:
+        proceed_choice = get_proceed_choice()
+
+    return proceed_choice.upper()
 
 
 def get_service_choice(database):

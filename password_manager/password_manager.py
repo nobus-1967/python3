@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """Collect, encrypt/decript, store and view service data with passwords."""
-import getpass
-
 import pathcreator
 import keyvalidator
 import dataencryptor
@@ -72,32 +70,45 @@ def main():
                 else:
                     print('Your database of services and passwords is empty!')
             elif menu_choice == 'A':
-                dataencryptor.add_service(enc_database)
-                dataencryptor.store_database(enc_database)
+                proceed = check_proceed_choice()
+                if proceed == 'Y':
+                    dataencryptor.add_service(enc_database)
+                    dataencryptor.store_database(enc_database)
+                elif proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
             elif menu_choice == 'C':
-                if len(enc_database) > 0:
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
                     key = get_service_key(enc_database)
-                    password = getpass.getpass('\t>>> Enter a new password: ')
+                    password = input('\t>>> Enter a new password: ')
                     enc_password = dataencryptor.encrypt_password(password)
                     enc_database[key][1] = enc_password
                     print('Your password was changes!')
                     dataencryptor.store_database(enc_database)
-                else:
+                elif len(enc_database) > 0 and proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
+                elif len(enc_database) == 0:
                     print('Nothing to change, your database is empty!')
             elif menu_choice == 'D':
-                if len(enc_database) > 0:
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
                     key = get_service_key(enc_database)
                     del enc_database[key]
                     print(f'The service \'{key}\' was deleted!')
                     dataencryptor.store_database(enc_database)
-                else:
+                elif len(enc_database) > 0 and proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
+                elif len(enc_database) == 0:
                     print('Nothing to delete, your database is empty!')
             elif menu_choice == 'L':
-                if len(enc_database) > 0:
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
                     enc_database.clear()
                     print('Your database cleared!')
                     dataencryptor.store_database(enc_database)
-                else:
+                elif len(enc_database) > 0 and proceed == 'Q':
+                    print('You\'ve canceled a database operation!')
+                elif len(enc_database) == 0:
                     print('Your database is already empty!')
     else:
         print('Sorry, your master password has not been validated.')
@@ -140,6 +151,29 @@ def check_menu_choice():
         menu_choice = get_menu_choice()
 
     return menu_choice.upper()
+
+
+def get_proceed_choice():
+    """Input user's choice to proceed or cancel an operation."""
+    try:
+        user_choice = input('\t>>> Enter Y=proceed, Q=cancel: ')
+        assert user_choice.upper() in ['Y', 'Q']
+    except (AssertionError, ValueError):
+        print('Enter valid choice (Y, Q).')
+        user_choice = None
+
+    finally:
+        return user_choice
+
+
+def check_proceed_choice():
+    """Get and check user's procceed or cancel."""
+    proceed_choice = get_proceed_choice()
+
+    while proceed_choice is None:
+        proceed_choice = get_proceed_choice()
+
+    return proceed_choice.upper()
 
 
 def get_service_choice(database):

@@ -9,7 +9,7 @@ def add_service(enc_database):
     """Add service names, logins and passwords to dict."""
     service = input('\t>>> Enter a service name: ')
     login = input('\t>>> Enter your login (or e-mail): ')
-    password = getpass.getpass('\t>>> Enter your password: ')
+    password = input('\t>>> Enter your password: ')
 
     enc_database[service] = [login, encrypt_password(password)]
 
