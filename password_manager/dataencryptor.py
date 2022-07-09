@@ -46,7 +46,7 @@ def view_database(database):
         for index, key in enumerate(database.keys()):
             data = database.get(key)
 
-            print(f'{index+1}) {key} =',
+            print(f'{index+1}) {key} -',
                   f'login: {data[0]}, password: {data[1]}')
     else:
         print('Your database is empty.')

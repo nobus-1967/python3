@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Collect, encrypt/decript, store and view service data with passwords."""
+"""
+Collect, encrypt/decript, store and view service data with passwords.
+Version 1.1
+"""
 import pathlib
 import getpass
 import bcrypt
 import base64
 import pickle
+import pyperclip
 
 
 def main():
@@ -58,7 +62,7 @@ def main():
         # 4. Run main menu.
         show_menu()
 
-        # 5. Get the user's choice from main menu and process it.
+        # 5. Get the user's menu from main menu and process it.
         menu_choice = 'V'
 
         while menu_choice != 'Q':
@@ -71,6 +75,15 @@ def main():
                     view_database(dec_database)
                 else:
                     print('Your database of services and passwords is empty!')
+            elif menu_choice == 'C':
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
+                    key = get_service_key(enc_database)
+                    dec_database = decrypt_database(enc_database)
+                    print(f'Your login: {dec_database[key][0]},',
+                          f'your password: {dec_database[key][1]}')
+                    pyperclip.copy(dec_database[key][1])
+                    print('Your password was copied to the clipboard!')
             elif menu_choice == 'A':
                 proceed = check_proceed_choice()
                 if proceed == 'Y':
@@ -78,13 +91,16 @@ def main():
                     store_database(enc_database)
                 elif proceed == 'Q':
                     print('You\'ve canceled a database operation!')
-            elif menu_choice == 'C':
+            elif menu_choice == 'G':
                 proceed = check_proceed_choice()
                 if len(enc_database) > 0 and proceed == 'Y':
                     key = get_service_key(enc_database)
                     password = input('\t>>> Enter a new password: ')
                     enc_password = encrypt_password(password)
                     enc_database[key][1] = enc_password
+                    dec_database = decrypt_database(enc_database)
+                    print(f'Your login: {dec_database[key][0]},',
+                          f'your password: {dec_database[key][1]}')
                     print('Your password was changes!')
                     store_database(enc_database)
                 elif len(enc_database) > 0 and proceed == 'Q':
@@ -118,6 +134,19 @@ def main():
     print()
     print('---------------')
     print('(c) Nobus, 2022')
+
+
+def show_menu():
+    """Print the main menu of the program."""
+    print()
+    print('\tMenu:')
+    print('\t(V)iew all services')
+    print('\t(C)opy a password')
+    print('\t(A)dd a new service')
+    print('\tChan(G)e a password')
+    print('\t(D)elete a service')
+    print('\tC(L)ear all items')
+    print('\t(Q)uit the program')
 
 
 def set_data_dir():
@@ -166,6 +195,19 @@ def validate_hash(restored_hashed_password):
     return bcrypt.checkpw(password.encode(), restored_hashed_password)
 
 
+def get_menu_choice():
+    """Get user's menu_choice from menu's items."""
+    try:
+        menu_choice = input('\t>>> Enter your choice (V/C/A/G/D/L or Q): ')
+        assert menu_choice.upper() in 'VCAGDLQ'
+    except (AssertionError, ValueError):
+        print('Enter a valid choice!')
+        menu_choice = None
+
+    finally:
+        return menu_choice
+
+
 def add_service(enc_database):
     """Add service names, logins and passwords to dict."""
     service = input('\t>>> Enter a service name: ')
@@ -207,7 +249,7 @@ def view_database(database):
         for index, key in enumerate(database.keys()):
             data = database.get(key)
 
-            print(f'{index+1}) {key} =',
+            print(f'{index+1}) {key} -',
                   f'login: {data[0]}, password: {data[1]}')
     else:
         print('Your database is empty.')
@@ -236,31 +278,6 @@ def load_database():
         return pickle.load(file)
 
 
-def show_menu():
-    """Print the main menu of the program."""
-    print()
-    print('\tMenu:')
-    print('\t(V)iew all services')
-    print('\t(A)dd a new service')
-    print('\t(C)hange a password')
-    print('\t(D)elete a service')
-    print('\tC(L)ear all items')
-    print('\t(Q)uit the program')
-
-
-def get_menu_choice():
-    """Get user's menu_choice from menu's items."""
-    try:
-        menu_choice = input('\t>>> Enter your choice (V, A, C, D, L or Q): ')
-        assert menu_choice.upper() in ['V', 'A', 'C', 'D', 'L', 'Q']
-    except (AssertionError, ValueError):
-        print('Enter a valid choice!')
-        menu_choice = None
-
-    finally:
-        return menu_choice
-
-
 def check_menu_choice():
     """Get and check user's menu_choice."""
     menu_choice = get_menu_choice()
@@ -275,9 +292,9 @@ def get_proceed_choice():
     """Input user's choice to proceed or cancel an operation."""
     try:
         user_choice = input('\t>>> Enter Y=proceed, Q=cancel: ')
-        assert user_choice.upper() in ['Y', 'Q']
+        assert user_choice.upper() in 'YQ'
     except (AssertionError, ValueError):
-        print('Enter valid choice (Y, Q).')
+        print('Enter valid choice (Y or Q).')
         user_choice = None
 
     finally:
@@ -328,7 +345,7 @@ def get_service_key(database):
 
     service_num = check_service_choice(database)
 
-    return list_services[service_num-1]
+    return list_services[service_num - 1]
 
 
 if __name__ == '__main__':

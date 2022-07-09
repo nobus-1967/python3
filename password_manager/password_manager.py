@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Collect, encrypt/decript, store and view service data with passwords."""
+"""
+Collect, encrypt/decript, store and view service data with passwords.
+Version 1.1
+"""
+import pyperclip
+
 import pathcreator
 import keyvalidator
 import dataencryptor
@@ -69,6 +74,15 @@ def main():
                     dataencryptor.view_database(dec_database)
                 else:
                     print('Your database of services and passwords is empty!')
+            elif menu_choice == 'C':
+                proceed = check_proceed_choice()
+                if len(enc_database) > 0 and proceed == 'Y':
+                    key = get_service_key(enc_database)
+                    dec_database = dataencryptor.decrypt_database(enc_database)
+                    print(f'Your login: {dec_database[key][0]},',
+                          f'your password: {dec_database[key][1]}')
+                    pyperclip.copy(dec_database[key][1])
+                    print('Your password was copied to the clipboard!')
             elif menu_choice == 'A':
                 proceed = check_proceed_choice()
                 if proceed == 'Y':
@@ -76,13 +90,16 @@ def main():
                     dataencryptor.store_database(enc_database)
                 elif proceed == 'Q':
                     print('You\'ve canceled a database operation!')
-            elif menu_choice == 'C':
+            elif menu_choice == 'G':
                 proceed = check_proceed_choice()
                 if len(enc_database) > 0 and proceed == 'Y':
                     key = get_service_key(enc_database)
                     password = input('\t>>> Enter a new password: ')
                     enc_password = dataencryptor.encrypt_password(password)
                     enc_database[key][1] = enc_password
+                    dec_database = dataencryptor.decrypt_database(enc_database)
+                    print(f'Your login: {dec_database[key][0]},',
+                          f'your password: {dec_database[key][1]}')
                     print('Your password was changes!')
                     dataencryptor.store_database(enc_database)
                 elif len(enc_database) > 0 and proceed == 'Q':
@@ -123,8 +140,9 @@ def show_menu():
     print()
     print('\tMenu:')
     print('\t(V)iew all services')
+    print('\t(C)opy a password')
     print('\t(A)dd a new service')
-    print('\t(C)hange a password')
+    print('\tChan(G)e a password')
     print('\t(D)elete a service')
     print('\tC(L)ear all items')
     print('\t(Q)uit the program')
@@ -133,8 +151,9 @@ def show_menu():
 def get_menu_choice():
     """Get user's menu_choice from menu's items."""
     try:
-        menu_choice = input('\t>>> Enter your choice (V, A, C, D, L or Q): ')
-        assert menu_choice.upper() in ['V', 'A', 'C', 'D', 'L', 'Q']
+        
+        menu_choice = input('\t>>> Enter your choice (V/C/A/G/D/L or Q): ')
+        assert menu_choice.upper() in 'VCAGDLQ'
     except (AssertionError, ValueError):
         print('Enter a valid choice!')
         menu_choice = None
@@ -157,9 +176,9 @@ def get_proceed_choice():
     """Input user's choice to proceed or cancel an operation."""
     try:
         user_choice = input('\t>>> Enter Y=proceed, Q=cancel: ')
-        assert user_choice.upper() in ['Y', 'Q']
+        assert user_choice.upper() in 'YQ'
     except (AssertionError, ValueError):
-        print('Enter valid choice (Y, Q).')
+        print('Enter valid choice (Y or Q).')
         user_choice = None
 
     finally:
@@ -210,7 +229,7 @@ def get_service_key(database):
 
     service_num = check_service_choice(database)
 
-    return list_services[service_num-1]
+    return list_services[service_num - 1]
 
 
 if __name__ == '__main__':
