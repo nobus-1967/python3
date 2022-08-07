@@ -5,8 +5,12 @@ import re
 def main():
     """Run main program."""
     email_regex = re.compile(
-        r'(^[A-Z0-9!#$%&\'*+-/=?^_`{|}~.]+)@([A-Z0-9-]+\.[A-Z]{2,}$)',
-        re.IGNORECASE,
+        r'''
+        (^(?:[A-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Z0-9!#$%&'*+/=^_`{|}~-]+)*))
+        @
+        ((?:[A-Z0-9]+(?:-[A-Z0-9]+)*)(?:\.[A-Z]{2,})$)
+        ''',
+        re.IGNORECASE | re.VERBOSE
     )
 
     user_email = input('Enter email to check: ')
