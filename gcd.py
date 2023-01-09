@@ -50,7 +50,7 @@ if __name__ == '__main__':
                     sys.argv[1].strip().isnumeric()
                     and sys.argv[2].strip().isnumeric()
                 ) and (int(sys.argv[1]) > 0 and int(sys.argv[2]) > 0):
-                    m, n = [int(arg.strip()) for arg in sys.argv[1:3]]
+                    m, n = [int(arg.strip()) for arg in sys.argv[1:]]
                     main()
                 else:
                     raise ValueError
