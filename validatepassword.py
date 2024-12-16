@@ -208,14 +208,14 @@ def validate_password(password):
             Colors.error
             + "[ERROR]"
             + Colors.normal
-            + " Password must contain (an) lower-case letter(s)!"
+            + " Password must contain (a) lower-case letter(s)!"
         )
     if not is_valid["has_uppercase"]:
         print(
             Colors.error
             + "[ERROR]"
             + Colors.normal
-            + " Password must contain (an) uppercase letter(s)!"
+            + " Password must contain (a) uppercase letter(s)!"
         )
     if not is_valid["has_symbol"]:
         print(
